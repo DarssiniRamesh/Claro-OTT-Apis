@@ -1,0 +1,197 @@
+{
+  "info": {
+    "_postman_id": "e5f8b3e0-5b1a-4b5e-8b1a-5b1a4b5e8b1a",
+    "name": "Claro OTT APIs",
+    "description": "Collection for testing Claro OTT APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Metadata",
+      "item": [
+        {
+          "name": "Get All Metadata",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/metadata",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "metadata"]
+            },
+            "description": "Get all metadata"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Metadata by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/metadata/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "metadata", "1"]
+            },
+            "description": "Get metadata by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints for metadata operations"
+    },
+    {
+      "name": "Asset",
+      "item": [
+        {
+          "name": "Get All Assets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/asset",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "asset"]
+            },
+            "description": "Get all assets"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Asset by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/asset/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "asset", "1"]
+            },
+            "description": "Get asset by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints for asset operations"
+    },
+    {
+      "name": "Navigation",
+      "item": [
+        {
+          "name": "Get Navigation Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/nav/data",
+              "host": ["{{baseUrl}}"],
+              "path": ["nav", "data"]
+            },
+            "description": "Get navigation data"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints for navigation operations"
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "register"]
+            },
+            "description": "Register a new user"
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "login"]
+            },
+            "description": "Login user"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Header Info",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/startheaderinfo",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "startheaderinfo"]
+            },
+            "description": "Get user header info (requires authentication)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints for user operations"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "your_jwt_token_here",
+      "type": "string"
+    }
+  ]
+}

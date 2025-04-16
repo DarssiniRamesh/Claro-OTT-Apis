@@ -1,0 +1,442 @@
+openapi: 3.0.0
+info:
+  title: Claro OTT API
+  description: API for Claro OTT platform
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Error message
+        stack:
+          type: string
+          example: Error stack trace
+    Metadata:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        title:
+          type: string
+          example: The Matrix
+        description:
+          type: string
+          example: A computer hacker learns about the true nature of reality
+        type:
+          type: string
+          enum: [movie, series, episode]
+          example: movie
+        genre:
+          type: array
+          items:
+            type: string
+          example: [sci-fi, action]
+        releaseDate:
+          type: string
+          format: date
+          example: '1999-03-31'
+        duration:
+          type: integer
+          example: 136
+        rating:
+          type: number
+          format: float
+          example: 8.7
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        title:
+          type: string
+          example: The Matrix Trailer
+        type:
+          type: string
+          enum: [video, image, audio]
+          example: video
+        url:
+          type: string
+          example: https://example.com/videos/matrix-trailer.mp4
+        format:
+          type: string
+          example: mp4
+        size:
+          type: integer
+          example: 15000000
+        metadata:
+          type: string
+          example: '1'
+    Navigation:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        title:
+          type: string
+          example: Home
+        path:
+          type: string
+          example: /
+        icon:
+          type: string
+          example: home
+        order:
+          type: integer
+          example: 1
+        isActive:
+          type: boolean
+          example: true
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          example: john@example.com
+        role:
+          type: string
+          enum: [user, admin]
+          example: user
+    UserHeaderInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          example: john@example.com
+        avatar:
+          type: string
+          example: https://example.com/avatar.jpg
+        notifications:
+          type: integer
+          example: 3
+        subscription:
+          type: string
+          example: premium
+        lastLogin:
+          type: string
+          format: date-time
+          example: '2023-04-15T10:30:00Z'
+
+paths:
+  /api/metadata:
+    get:
+      summary: Get all metadata
+      description: Returns a list of all metadata
+      responses:
+        '200':
+          description: A list of metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  count:
+                    type: integer
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Metadata'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /api/metadata/{id}:
+    get:
+      summary: Get metadata by ID
+      description: Returns metadata for a specific ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Metadata object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Metadata'
+        '404':
+          description: Metadata not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /api/asset:
+    get:
+      summary: Get all assets
+      description: Returns a list of all assets
+      responses:
+        '200':
+          description: A list of assets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  count:
+                    type: integer
+                    example: 3
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Asset'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /api/asset/{id}:
+    get:
+      summary: Get asset by ID
+      description: Returns asset for a specific ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Asset object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Asset'
+        '404':
+          description: Asset not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /nav/data:
+    get:
+      summary: Get navigation data
+      description: Returns navigation data for the application
+      responses:
+        '200':
+          description: Navigation data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  count:
+                    type: integer
+                    example: 5
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Navigation'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /user/register:
+    post:
+      summary: Register a new user
+      description: Creates a new user account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  example: john@example.com
+                password:
+                  type: string
+                  example: password123
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: User registered successfully
+                  data:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /user/login:
+    post:
+      summary: Login user
+      description: Authenticates a user and returns a JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: john@example.com
+                password:
+                  type: string
+                  example: password123
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /user/startheaderinfo:
+    get:
+      summary: Get user header info
+      description: Returns user information for the header
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User header info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/UserHeaderInfo'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
